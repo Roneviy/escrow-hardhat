@@ -1,18 +1,29 @@
 body {
   background-color: #eee;
   display: flex;
+  justify-content: center;
+  align-content: center;
   font-family: 'Muli', sans-serif;
 }
 
-.contract, .existing-contracts {
-  margin: 20px;
-  display: inline-block;
+.contract {
+  margin-top: 100px;
+  margin-bottom: 20px;
+  width: 700px;
+  padding: 40px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.existing-contracts {
+  width: 700px;
   padding: 40px;
   border: 1px solid #ddd;
   background-color: #fff;
 }
 
 h1 {
+  text-align: center;
   margin: 10px;
   padding: 10px;
   border-bottom: 1px solid #eee;
@@ -32,16 +43,45 @@ input[type="text"] {
 }
 
 .button {
-  background-color: #f58427;
+  background-color: #2754ba;
+  width: 100px;
   color: white;
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 20px;
   padding: 9px 25px;
   font-size: 14px;
   letter-spacing: 1px;
   cursor: pointer;
+  margin: 20px auto;
+}
+
+.button-approve {
+  background-color: green;
+  width: 100px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 9px 25px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin: 20px auto;
+}
+
+.button-decline {
+  background-color: red;
+  width: 100px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 9px 25px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin: 20px auto;
 }
 
 .existing-contract ul {
@@ -66,5 +106,10 @@ input[type="text"] {
 
 .existing-contract .complete {
   color: #5aa75a;
+  text-align: center;
+}
+
+.existing-contract .decline {
+  color: red;
   text-align: center;
 }

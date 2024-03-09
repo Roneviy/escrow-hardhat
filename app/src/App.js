@@ -10,10 +10,16 @@ export async function approve(escrowContract, signer) {
   await approveTxn.wait();
 }
 
+export async function decline(escrowContract, signer) {
+  const declineTxn = await escrowContract.connect(signer).decline();
+  await declineTxn.wait();
+}
+
 function App() {
   const [escrows, setEscrows] = useState([]);
   const [account, setAccount] = useState();
   const [signer, setSigner] = useState();
+  const [isDeployAllowed, setIsDeployAllowed] = useState(true);
 
   useEffect(() => {
     async function getAccounts() {
@@ -29,9 +35,18 @@ function App() {
   async function newContract() {
     const beneficiary = document.getElementById('beneficiary').value;
     const arbiter = document.getElementById('arbiter').value;
-    const value = ethers.BigNumber.from(document.getElementById('wei').value);
+    const value = ethers.utils.parseEther(document.getElementById('eth').value);
+
+    if (beneficiary === arbiter) {
+      alert('Arbiter cannot be the same as beneficiary');
+      return;
+    }
+
+    setIsDeployAllowed(false);
+
     const escrowContract = await deploy(signer, arbiter, beneficiary, value);
 
+    setIsDeployAllowed(true);
 
     const escrow = {
       address: escrowContract.address,
@@ -48,6 +63,17 @@ function App() {
 
         await approve(escrowContract, signer);
       },
+
+      handleDecline: async () => {
+        escrowContract.on('Decline', () => {
+          document.getElementById(escrowContract.address).className =
+          'decline';
+          document.getElementById(escrowContract.address).innerText =
+          "✗ It's been declined!";
+        });
+
+        await decline(escrowContract, signer);
+      }
     };
 
     setEscrows([...escrows, escrow]);
@@ -68,8 +94,8 @@ function App() {
         </label>
 
         <label>
-          Deposit Amount (in Wei)
-          <input type="text" id="wei" />
+          Deposit Amount (in ETH)
+          <input type="text" id="eth" />
         </label>
 
         <div
@@ -78,7 +104,11 @@ function App() {
           onClick={(e) => {
             e.preventDefault();
 
-            newContract();
+            if (isDeployAllowed) { 
+              newContract();
+            } else {
+              alert('Cannot deploy contract until conditions are met');
+            }
           }}
         >
           Deploy
