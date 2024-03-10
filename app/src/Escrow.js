@@ -1,13 +1,27 @@
 import { ethers } from 'ethers';
+import { useState } from 'react';
+
 export default function Escrow({
   address,
   arbiter,
   beneficiary,
   value,
   handleApprove,
-  handleDecline
-
+  handleDecline,
 }) {
+  const [isApproved, setIsApproved] = useState(false);
+  const [isDeclined, setIsDeclined] = useState(false);
+
+  const handleClick = async (action) => {
+    if (action === 'approve') {
+      await handleApprove();
+      setIsApproved(true);
+    } else if (action === 'decline') {
+      await handleDecline();
+      setIsDeclined(true);
+    }
+  };
+
   return (
     <div className="existing-contract">
       <ul className="fields">
@@ -23,27 +37,32 @@ export default function Escrow({
           <div> Value </div>
           <div> {ethers.utils.formatEther(value)} ETH </div>
         </li>
-        <div
-          className="button-approve"
-          id={address}
-          onClick={(e) => {
-            e.preventDefault();
-
-            handleApprove();
-          }}
-        >
-          Approve
-        </div>
-        <div 
-        className="button-decline"
-        id={address}
-        onClick={(e) => {
-          e.preventDefault();
-          handleDecline();
-        }}
-        >
-          Decline
-        </div>
+        {!isApproved && !isDeclined && (
+          <>
+            <button
+              className="button-approve"
+              onClick={() => handleClick('approve')}
+            >
+              Approve
+            </button>
+            <button
+              className="button-decline"
+              onClick={() => handleClick('decline')}
+            >
+              Decline
+            </button>
+          </>
+        )}
+        {isApproved && (
+          <div className="approved-text">
+            ✓ It's been approved!
+          </div>
+        )}
+        {isDeclined && (
+          <div className="declined-text">
+            ✗ It's been declined!
+          </div>
+        )}
       </ul>
     </div>
   );
