@@ -2,7 +2,6 @@ import { ethers } from 'ethers';
 import { useState } from 'react';
 
 export default function Escrow({
-  address,
   arbiter,
   beneficiary,
   value,
