@@ -1,5 +1,5 @@
-import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
 import deploy from './deploy';
 import Escrow from './Escrow';
 
@@ -20,17 +20,33 @@ function App() {
   const [account, setAccount] = useState();
   const [signer, setSigner] = useState();
   const [isDeployAllowed, setIsDeployAllowed] = useState(true);
+  const [walletAddress, setWalletAddress] = useState('');
 
   useEffect(() => {
     async function getAccounts() {
       const accounts = await provider.send('eth_requestAccounts', []);
 
-      setAccount(accounts[0]);
-      setSigner(provider.getSigner());
+      if (accounts.length > 0) {
+        setWalletAddress(accounts[0]);
+        setAccount(accounts[0]);
+        setSigner(provider.getSigner());
+      }
     }
 
     getAccounts();
-  }, [account]);
+  }, []);
+
+  async function connectWallet() {
+    try {
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const accounts = await provider.send('eth_requestAccounts', []);
+      setWalletAddress(accounts[0]);
+      setAccount(accounts[0]);
+      setSigner(provider.getSigner());
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+    }
+  }
 
   async function newContract() {
     const beneficiary = document.getElementById('beneficiary').value;
@@ -81,6 +97,9 @@ function App() {
 
   return (
     <>
+      <div className='wallet' onClick={connectWallet}>
+        <p>{walletAddress.length <= 15 ? 'Connect wallet' : walletAddress}</p>
+      </div>
       <div className="contract">
         <h1> New Contract </h1>
         <label>

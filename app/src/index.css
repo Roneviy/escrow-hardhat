@@ -7,7 +7,7 @@ body {
 }
 
 .contract {
-  margin-top: 100px;
+  margin-top: 5px;
   margin-bottom: 20px;
   width: 700px;
   padding: 40px;
@@ -20,6 +20,20 @@ body {
   padding: 40px;
   border: 1px solid #ddd;
   background-color: #fff;
+}
+
+.wallet {
+  border-radius: 6px;
+  background-color: #2754ba;
+  width: 150px;
+  color: white;
+  padding-left: 5px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  cursor: pointer;
 }
 
 h1 {
@@ -43,6 +57,7 @@ input[type="text"] {
 }
 
 .button {
+  border-radius: 6px;
   background-color: #2754ba;
   width: 100px;
   color: white;
@@ -57,6 +72,7 @@ input[type="text"] {
 }
 
 .button-approve {
+  border-radius: 6px;
   background-color: green;
   width: 150px;
   color: white;
@@ -72,6 +88,7 @@ input[type="text"] {
 }
 
 .button-decline {
+  border-radius: 6px;
   background-color: red;
   width: 150px;
   color: white;
